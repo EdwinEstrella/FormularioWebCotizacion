@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario para Desarrollo de Página Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .service-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-input input[type="text"] {
+            flex: 1;
+            margin: 0;
+        }
+
+        .references-list {
+            margin-top: 15px;
+        }
+
+        .references-list input {
+            margin-bottom: 10px;
+        }
+
+        .color-input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .color-input-group input[type="text"] {
+            flex: 1;
+        }
+
+        .color-preview {
+            width: 50px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+        }
+
+        .submit-btn {
+            background: white;
+            color: #333;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .services-grid,
+            .signature-section {
+                grid-template-columns: 1fr;
+            }
+
+            .color-input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Formulario para Desarrollo de Página Web</h1>
+            <p>Complete toda la información necesaria para comenzar el desarrollo de su sitio web</p>
+        </div>
+
+        <form id="webDevForm" method="POST" action="YOUR_N8N_WEBHOOK_URL">
+            <!-- Información de Contacto -->
+            <div class="section">
+                <h2>📞 Información de Contacto</h2>
+                <div class="form-group">
+                    <label for="cliente">Cliente / Empresa:</label>
+                    <input type="text" id="cliente" name="cliente" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="contacto">Persona de contacto:</label>
+                    <input type="text" id="contacto" name="contacto" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <!-- Información General del Negocio -->
+            <div class="section">
+                <h2>🏢 Información General del Negocio</h2>
+                <div class="form-group">
+                    <label for="nombreComercial">Nombre comercial de la empresa:</label>
+                    <input type="text" id="nombreComercial" name="nombreComercial" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcionNegocio">Descripción breve del negocio:</label>
+                    <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Cuéntenos brevemente sobre su negocio..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección física (si aplica):</label>
+                    <input type="text" id="direccion" name="direccion">
+                </div>
+                <div class="form-group">
+                    <label for="telefonoContacto">Teléfono(s) de contacto:</label>
+                    <input type="tel" id="telefonoContacto" name="telefonoContacto">
+                </div>
+                <div class="form-group">
+                    <label for="correoCorporativo">Correo(s) corporativo(s):</label>
+                    <input type="email" id="correoCorporativo" name="correoCorporativo">
+                </div>
+                <div class="form-group">
+                    <label>Redes sociales:</label>
+                    <input type="text" name="facebook" placeholder="Facebook URL" style="margin-bottom: 10px;">
+                    <input type="text" name="instagram" placeholder="Instagram URL" style="margin-bottom: 10px;">
+                    <input type="text" name="tiktok" placeholder="TikTok URL" style="margin-bottom: 10px;">
+                    <input type="text" name="linkedin" placeholder="LinkedIn URL" style="margin-bottom: 10px;">
+                    <input type="text" name="otraRed" placeholder="Otra red social">
+                </div>
+            </div>
+
+            <!-- Detalles de la Página Web -->
+            <div class="section">
+                <h2>🌐 Detalles de la Página Web</h2>
+                <div class="form-group">
+                    <label>Objetivo principal de la página web:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="servicios" name="objetivo" value="servicios">
+                            <label for="servicios">Presentación de servicios</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ecommerce" name="objetivo" value="ecommerce">
+                            <label for="ecommerce">Venta de productos (E-commerce)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="portafolio" name="objetivo" value="portafolio">
+                            <label for="portafolio">Portafolio de trabajos</label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <input type="text" name="objetivoOtro" placeholder="Otro objetivo...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Secciones necesarias:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="inicio" name="secciones" value="inicio">
+                            <label for="inicio">Inicio (Home)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="nosotros" name="secciones" value="nosotros">
+                            <label for="nosotros">Nosotros</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contacto" name="secciones" value="contacto">
+                            <label for="contacto">Contacto</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="faq" name="secciones" value="faq">
+                            <label for="faq">Preguntas Frecuentes (FAQ)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="testimonios" name="secciones" value="testimonios">
+                            <label for="testimonios">Testimonios</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="blog" name="secciones" value="blog">
+                            <label for="blog">Blog / Noticias</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Servicios (si aplica):</label>
+                    <div class="services-grid">
+                        <div class="service-input">
+                            <span>1.</span>
+                            <input type="text" name="servicio1" placeholder="Servicio 1">
+                        </div>
+                        <div class="service-input">
+                            <span>2.</span>
+                            <input type="text" name="servicio2" placeholder="Servicio 2">
+                        </div>
+                        <div class="service-input">
+                            <span>3.</span>
+                            <input type="text" name="servicio3" placeholder="Servicio 3">
+                        </div>
+                        <div class="service-input">
+                            <span>4.</span>
+                            <input type="text" name="servicio4" placeholder="Servicio 4">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Idiomas de la web:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="espanol" name="idiomas" value="espanol" checked>
+                            <label for="espanol">Español</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ingles" name="idiomas" value="ingles">
+                            <label for="ingles">Inglés</label>
+                        </div>
+                    </div>
+                    <input type="text" name="otroIdioma" placeholder="Otro idioma..." style="margin-top: 15px;">
+                </div>
+            </div>
+
+            <!-- Contenido y Materiales -->
+            <div class="section">
+                <h2>📸 Contenido y Materiales</h2>
+                <div class="form-group">
+                    <label>Imágenes y fotografías:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="imagenesCliente" name="imagenes" value="cliente">
+                            <label for="imagenesCliente">Las proporcionará el cliente</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="imagenesStock" name="imagenes" value="stock">
+                            <label for="imagenesStock">Buscar imágenes de stock</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Textos para cada página:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="textosCliente" name="textos" value="cliente">
+                            <label for="textosCliente">El cliente los enviará</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="copywriting" name="textos" value="copywriting">
+                            <label for="copywriting">Necesito servicio de copywriting</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="palabrasClave">Palabras clave para SEO:</label>
+                    <input type="text" id="palabrasClave" name="palabrasClave" placeholder="Ej: diseño web, desarrollo, marketing digital...">
+                </div>
+            </div>
+
+            <!-- Información Técnica -->
+            <div class="section">
+                <h2>⚙️ Información Técnica</h2>
+                <div class="form-group">
+                    <label for="dominioExistente">Dominio (si ya tiene):</label>
+                    <input type="text" id="dominioExistente" name="dominioExistente" placeholder="www.ejemplo.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Dominio:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="tieneDominio" name="dominio" value="tiene">
+                            <label for="tieneDominio">Sí, ya lo tengo</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="necesitaDominio" name="dominio" value="necesita">
+                            <label for="necesitaDominio">No, necesito que lo registres</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Hosting:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="tieneHosting" name="hosting" value="tiene">
+                            <label for="tieneHosting">Sí, ya tengo</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="necesitaHosting" name="hosting" value="necesita">
+                            <label for="necesitaHosting">No, necesito que lo gestiones</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo corporativo:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="necesitaCorreo" name="correoCorp" value="si">
+                            <label for="necesitaCorreo">Sí, necesito configurar</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="noNecesitaCorreo" name="correoCorp" value="no">
+                            <label for="noNecesitaCorreo">No es necesario</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referencias y Estilo -->
+            <div class="section">
+                <h2>🎨 Referencias y Estilo</h2>
+                <div class="form-group">
+                    <label for="coloresPrimarios">Colores principales:</label>
+                    <input type="text" id="coloresPrimarios" name="coloresPrimarios" placeholder="Ej: Azul, Blanco, Negro">
+                </div>
+
+                <div class="form-group">
+                    <label for="coloresSecundarios">Colores secundarios:</label>
+                    <input type="text" id="coloresSecundarios" name="coloresSecundarios" placeholder="Ej: Gris, Verde claro">
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de estilo:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="moderno" name="estilo" value="moderno">
+                            <label for="moderno">Moderno</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="minimalista" name="estilo" value="minimalista">
+                            <label for="minimalista">Minimalista</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="elegante" name="estilo" value="elegante">
+                            <label for="elegante">Elegante</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="corporativo" name="estilo" value="corporativo">
+                            <label for="corporativo">Corporativo</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="juvenil" name="estilo" value="juvenil">
+                            <label for="juvenil">Divertido / Juvenil</label>
+                        </div>
+                    </div>
+                    <input type="text" name="otroEstilo" placeholder="Otro estilo..." style="margin-top: 15px;">
+                </div>
+
+                <div class="form-group">
+                    <label>Páginas de referencia que le gusten:</label>
+                    <div class="references-list">
+                        <input type="url" name="referencia1" placeholder="URL de referencia 1">
+                        <input type="url" name="referencia2" placeholder="URL de referencia 2">
+                        <input type="url" name="referencia3" placeholder="URL de referencia 3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funcionalidades Especiales -->
+            <div class="section">
+                <h2>⚡ Funcionalidades Especiales</h2>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="formularioContacto" name="funcionalidades" value="formularioContacto">
+                        <label for="formularioContacto">Formulario de contacto</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="whatsapp" name="funcionalidades" value="whatsapp">
+                        <label for="whatsapp">Botón de WhatsApp</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="chatVivo" name="funcionalidades" value="chatVivo">
+                        <label for="chatVivo">Chat en vivo</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="redesSociales" name="funcionalidades" value="redesSociales">
+                        <label for="redesSociales">Integración con redes sociales</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="pasarelaPago" name="funcionalidades" value="pasarelaPago">
+                        <label for="pasarelaPago">Integración con pasarela de pago</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="calendario" name="funcionalidades" value="calendario">
+                        <label for="calendario">Calendario / Reservas online</label>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <input type="text" name="otraFuncionalidad" placeholder="Otra funcionalidad...">
+                </div>
+            </div>
+
+            <!-- Firmas -->
+            <div class="section">
+                <h2>✍️ Firmas y Confirmación</h2>
+                <div class="signature-section">
+                    <div class="form-group">
+                        <label for="firmaCliente">Firma del cliente:</label>
+                        <input type="text" id="firmaCliente" name="firmaCliente" placeholder="Nombre completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFirma">Fecha:</label>
+                        <input type="date" id="fechaFirma" name="fechaFirma">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-section">
+                <button type="submit" class="submit-btn">
+                    🚀 Enviar Formulario
+                </button>
+                <p style="color: white; margin-top: 15px; opacity: 0.9;">
+                    Una vez enviado, recibirá una confirmación y nos pondremos en contacto.
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Establecer fecha actual por defecto
+        document.getElementById('fecha').valueAsDate = new Date();
+        document.getElementById('fechaFirma').valueAsDate = new Date();
+
+        // Validación del formulario
+        document.getElementById('webDevForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validaciones básicas
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ff4757';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e0e0e0';
+                }
+            });
+            
+            if (isValid) {
+                // Cambiar a tu URL de webhook de n8n
+                this.action = 'YOUR_N8N_WEBHOOK_URL';
+                this.submit();
+            } else {
+                alert('Por favor, complete todos los campos requeridos.');
+            }
+        });
+
+        // Efecto de hover en checkboxes
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.type !== 'checkbox' && e.target.type !== 'radio') {
+                    const input = this.querySelector('input');
+                    if (input.type === 'checkbox') {
+                        input.checked = !input.checked;
+                    } else if (input.type === 'radio') {
+                        input.checked = true;
+                    }
+                }
+            });
+        });
+
+        // Animación suave al hacer scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
