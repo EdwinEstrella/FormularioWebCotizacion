@@ -252,6 +252,50 @@
             margin-top: 30px;
         }
 
+        /* Elementos ocultos por defecto */
+        .hidden {
+            display: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Mensajes de éxito y error */
+        .message {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .error-field {
+            border-color: #dc3545 !important;
+            background-color: #fff5f5;
+        }
+
+        .error-text {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -295,7 +339,10 @@
             <p>Complete toda la información necesaria para comenzar el desarrollo de su sitio web</p>
         </div>
 
-        <form id="webDevForm" method="POST" action="YOUR_N8N_WEBHOOK_URL">
+        <!-- Mensaje de éxito/error -->
+        <div id="messageContainer" class="hidden"></div>
+
+        <form id="webDevForm" method="POST">
             <!-- Información de Contacto -->
             <div class="section">
                 <h2>
@@ -305,24 +352,19 @@
                     Información de Contacto
                 </h2>
                 <div class="form-group">
-                    <label for="cliente">Cliente / Empresa:</label>
+                    <label for="cliente">Cliente / Empresa: *</label>
                     <input type="text" id="cliente" name="cliente" required>
+                    <div class="error-text hidden" id="cliente-error"></div>
                 </div>
                 <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" id="fecha" name="fecha" required>
-                </div>
-                <div class="form-group">
-                    <label for="contacto">Persona de contacto:</label>
-                    <input type="text" id="contacto" name="contacto" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
+                    <label for="telefono">Teléfono: *</label>
                     <input type="tel" id="telefono" name="telefono" required>
+                    <div class="error-text hidden" id="telefono-error"></div>
                 </div>
                 <div class="form-group">
-                    <label for="email">Correo electrónico:</label>
+                    <label for="email">Correo electrónico: *</label>
                     <input type="email" id="email" name="email" required>
+                    <div class="error-text hidden" id="email-error"></div>
                 </div>
             </div>
 
@@ -335,12 +377,14 @@
                     Información General del Negocio
                 </h2>
                 <div class="form-group">
-                    <label for="nombreComercial">Nombre comercial de la empresa:</label>
+                    <label for="nombreComercial">Nombre comercial de la empresa: *</label>
                     <input type="text" id="nombreComercial" name="nombreComercial" required>
+                    <div class="error-text hidden" id="nombreComercial-error"></div>
                 </div>
                 <div class="form-group">
-                    <label for="descripcionNegocio">Descripción breve del negocio:</label>
+                    <label for="descripcionNegocio">Descripción breve del negocio: *</label>
                     <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Cuéntenos brevemente sobre su negocio..." required></textarea>
+                    <div class="error-text hidden" id="descripcionNegocio-error"></div>
                 </div>
                 <div class="form-group">
                     <label for="direccion">Dirección física (si aplica):</label>
@@ -373,7 +417,7 @@
                     Detalles de la Página Web
                 </h2>
                 <div class="form-group">
-                    <label>Objetivo principal de la página web:</label>
+                    <label>Objetivo principal de la página web: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
                             <input type="checkbox" id="servicios" name="objetivo" value="servicios">
@@ -391,29 +435,30 @@
                     <div class="form-group" style="margin-top: 15px;">
                         <input type="text" name="objetivoOtro" placeholder="Otro objetivo...">
                     </div>
+                    <div class="error-text hidden" id="objetivo-error"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Secciones necesarias:</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="inicio" name="secciones" value="inicio">
+                            <input type="checkbox" id="inicio" name="secciones" value="inicio" checked>
                             <label for="inicio">Inicio (Home)</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="nosotros" name="secciones" value="nosotros">
+                            <input type="checkbox" id="nosotros" name="secciones" value="nosotros" checked>
                             <label for="nosotros">Nosotros</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="contacto-seccion" name="secciones" value="contacto">
+                            <input type="checkbox" id="contacto-seccion" name="secciones" value="contacto" checked>
                             <label for="contacto-seccion">Contacto</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="faq" name="secciones" value="faq">
+                            <input type="checkbox" id="faq" name="secciones" value="faq" checked>
                             <label for="faq">Preguntas Frecuentes (FAQ)</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="testimonios" name="secciones" value="testimonios">
+                            <input type="checkbox" id="testimonios" name="secciones" value="testimonios" checked>
                             <label for="testimonios">Testimonios</label>
                         </div>
                         <div class="checkbox-item">
@@ -423,7 +468,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="servicios-section" style="display: none;">
                     <label>Servicios (si aplica):</label>
                     <div class="services-grid">
                         <div class="service-input">
@@ -446,7 +491,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Idiomas de la web:</label>
+                    <label>Idiomas de la web: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
                             <input type="checkbox" id="espanol" name="idiomas" value="espanol" checked>
@@ -456,8 +501,13 @@
                             <input type="checkbox" id="ingles" name="idiomas" value="ingles">
                             <label for="ingles">Inglés</label>
                         </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="bilingue" name="idiomas" value="bilingue">
+                            <label for="bilingue">Bilingüe (Español + Inglés)</label>
+                        </div>
                     </div>
                     <input type="text" name="otroIdioma" placeholder="Otro idioma..." style="margin-top: 15px;">
+                    <div class="error-text hidden" id="idiomas-error"></div>
                 </div>
             </div>
 
@@ -470,31 +520,33 @@
                     Contenido y Materiales
                 </h2>
                 <div class="form-group">
-                    <label>Imágenes y fotografías:</label>
+                    <label>Imágenes y fotografías: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" id="imagenesCliente" name="imagenes" value="cliente">
+                            <input type="radio" id="imagenesCliente" name="imagenes" value="cliente" required>
                             <label for="imagenesCliente">Las proporcionará el cliente</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" id="imagenesStock" name="imagenes" value="stock">
+                            <input type="radio" id="imagenesStock" name="imagenes" value="stock" required>
                             <label for="imagenesStock">Buscar imágenes de stock</label>
                         </div>
                     </div>
+                    <div class="error-text hidden" id="imagenes-error"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>Textos para cada página:</label>
+                    <label>Textos para cada página: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" id="textosCliente" name="textos" value="cliente">
+                            <input type="radio" id="textosCliente" name="textos" value="cliente" required>
                             <label for="textosCliente">El cliente los enviará</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" id="copywriting" name="textos" value="copywriting">
+                            <input type="radio" id="copywriting" name="textos" value="copywriting" required>
                             <label for="copywriting">Necesito servicio de copywriting</label>
                         </div>
                     </div>
+                    <div class="error-text hidden" id="textos-error"></div>
                 </div>
 
                 <div class="form-group">
@@ -512,50 +564,54 @@
                     Información Técnica
                 </h2>
                 <div class="form-group">
-                    <label for="dominioExistente">Dominio (si ya tiene):</label>
-                    <input type="text" id="dominioExistente" name="dominioExistente" placeholder="www.ejemplo.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Dominio:</label>
+                    <label>Dominio: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" id="tieneDominio" name="dominio" value="tiene">
+                            <input type="radio" id="tieneDominio" name="dominio" value="tiene" required>
                             <label for="tieneDominio">Sí, ya lo tengo</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" id="necesitaDominio" name="dominio" value="necesita">
+                            <input type="radio" id="necesitaDominio" name="dominio" value="necesita" required>
                             <label for="necesitaDominio">No, necesito que lo registres</label>
                         </div>
                     </div>
+                    <div class="error-text hidden" id="dominio-error"></div>
+                </div>
+
+                <div class="form-group hidden" id="dominio-existente-group">
+                    <label for="dominioExistente">Ingrese su dominio actual: *</label>
+                    <input type="text" id="dominioExistente" name="dominioExistente" placeholder="www.ejemplo.com">
+                    <div class="error-text hidden" id="dominioExistente-error"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>Hosting:</label>
+                    <label>Hosting: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" id="tieneHosting" name="hosting" value="tiene">
+                            <input type="radio" id="tieneHosting" name="hosting" value="tiene" required>
                             <label for="tieneHosting">Sí, ya tengo</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" id="necesitaHosting" name="hosting" value="necesita">
+                            <input type="radio" id="necesitaHosting" name="hosting" value="necesita" required>
                             <label for="necesitaHosting">No, necesito que lo gestiones</label>
                         </div>
                     </div>
+                    <div class="error-text hidden" id="hosting-error"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>Correo corporativo:</label>
+                    <label>Correo corporativo: *</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" id="necesitaCorreo" name="correoCorp" value="si">
+                            <input type="radio" id="necesitaCorreo" name="correoCorp" value="si" required>
                             <label for="necesitaCorreo">Sí, necesito configurar</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" id="noNecesitaCorreo" name="correoCorp" value="no">
+                            <input type="radio" id="noNecesitaCorreo" name="correoCorp" value="no" required>
                             <label for="noNecesitaCorreo">No es necesario</label>
                         </div>
                     </div>
+                    <div class="error-text hidden" id="correoCorp-error"></div>
                 </div>
             </div>
 
@@ -663,19 +719,20 @@
                 </h2>
                 <div class="signature-section">
                     <div class="form-group">
-                        <label for="firmaCliente">Firma del cliente:</label>
-                        <input type="text" id="firmaCliente" name="firmaCliente" placeholder="Nombre completo">
+                        <label for="firmaCliente">Firma del cliente: *</label>
+                        <input type="text" id="firmaCliente" name="firmaCliente" placeholder="Nombre completo" required>
+                        <div class="error-text hidden" id="firmaCliente-error"></div>
                     </div>
                     <div class="form-group">
                         <label for="fechaFirma">Fecha:</label>
-                        <input type="date" id="fechaFirma" name="fechaFirma">
+                        <input type="date" id="fechaFirma" name="fechaFirma" readonly>
                     </div>
                 </div>
             </div>
 
             <!-- Submit -->
             <div class="submit-section">
-                <button type="submit" class="submit-btn">
+                <button type="submit" class="submit-btn" id="submitBtn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
                         <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" fill="currentColor"/>
                     </svg>
@@ -690,32 +747,226 @@
 
     <script>
         // Establecer fecha actual por defecto
-        document.getElementById('fecha').valueAsDate = new Date();
         document.getElementById('fechaFirma').valueAsDate = new Date();
+
+        // Funciones para mostrar/ocultar elementos
+        function showElement(element) {
+            element.classList.remove('hidden');
+            element.classList.add('show');
+        }
+
+        function hideElement(element) {
+            element.classList.remove('show');
+            element.classList.add('hidden');
+        }
+
+        // Mostrar sección de servicios cuando se selecciona "Presentación de servicios"
+        document.getElementById('servicios').addEventListener('change', function() {
+            const serviciosSection = document.getElementById('servicios-section');
+            if (this.checked) {
+                serviciosSection.style.display = 'block';
+            } else {
+                serviciosSection.style.display = 'none';
+            }
+        });
+
+        // Mostrar campo de dominio cuando se selecciona "Sí, ya lo tengo"
+        document.getElementById('tieneDominio').addEventListener('change', function() {
+            const dominioGroup = document.getElementById('dominio-existente-group');
+            const dominioInput = document.getElementById('dominioExistente');
+            if (this.checked) {
+                showElement(dominioGroup);
+                dominioInput.required = true;
+            }
+        });
+
+        document.getElementById('necesitaDominio').addEventListener('change', function() {
+            const dominioGroup = document.getElementById('dominio-existente-group');
+            const dominioInput = document.getElementById('dominioExistente');
+            if (this.checked) {
+                hideElement(dominioGroup);
+                dominioInput.required = false;
+                dominioInput.value = '';
+            }
+        });
+
+        // Manejar selección de idiomas (evitar conflicto entre bilingüe y otros)
+        document.getElementById('bilingue').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('espanol').checked = false;
+                document.getElementById('ingles').checked = false;
+            }
+        });
+
+        document.getElementById('espanol').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('bilingue').checked = false;
+            }
+        });
+
+        document.getElementById('ingles').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('bilingue').checked = false;
+            }
+        });
+
+        // Funciones de validación
+        function validateField(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + '-error');
+            
+            if (!field.value.trim()) {
+                field.classList.add('error-field');
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
+                return false;
+            } else {
+                field.classList.remove('error-field');
+                errorDiv.classList.add('hidden');
+                return true;
+            }
+        }
+
+        function validateCheckboxGroup(name, message) {
+            const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+            const errorDiv = document.getElementById(name + '-error');
+            
+            if (checkboxes.length === 0) {
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
+                return false;
+            } else {
+                errorDiv.classList.add('hidden');
+                return true;
+            }
+        }
+
+        function validateRadioGroup(name, message) {
+            const radios = document.querySelectorAll(`input[name="${name}"]:checked`);
+            const errorDiv = document.getElementById(name + '-error');
+            
+            if (radios.length === 0) {
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
+                return false;
+            } else {
+                errorDiv.classList.add('hidden');
+                return true;
+            }
+        }
+
+        function showSuccessMessage() {
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = `
+                <div class="message success-message">
+                    <h3>🎉 ¡Felicitaciones!</h3>
+                    <p>Su formulario ha sido enviado exitosamente. Nos pondremos en contacto con usted pronto.</p>
+                </div>
+            `;
+            messageContainer.classList.remove('hidden');
+            messageContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showErrorMessage(message) {
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = `
+                <div class="message error-message">
+                    <h3>⚠️ Error en el formulario</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+            messageContainer.classList.remove('hidden');
+            messageContainer.scrollIntoView({ behavior: 'smooth' });
+        }
 
         // Validación del formulario
         document.getElementById('webDevForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Validaciones básicas
-            const requiredFields = this.querySelectorAll('[required]');
+            // Limpiar mensajes previos
+            document.getElementById('messageContainer').classList.add('hidden');
+            
             let isValid = true;
             
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.style.borderColor = '#ff4757';
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '#e0e0e0';
-                }
-            });
+            // Validar campos requeridos
+            isValid = validateField('cliente', 'El nombre del cliente es requerido') && isValid;
+            isValid = validateField('telefono', 'El teléfono es requerido') && isValid;
+            isValid = validateField('email', 'El correo electrónico es requerido') && isValid;
+            isValid = validateField('nombreComercial', 'El nombre comercial es requerido') && isValid;
+            isValid = validateField('descripcionNegocio', 'La descripción del negocio es requerida') && isValid;
+            isValid = validateField('firmaCliente', 'La firma del cliente es requerida') && isValid;
+            
+            // Validar grupos de checkboxes y radios
+            isValid = validateCheckboxGroup('objetivo', 'Debe seleccionar al menos un objetivo') && isValid;
+            isValid = validateCheckboxGroup('idiomas', 'Debe seleccionar al menos un idioma') && isValid;
+            isValid = validateRadioGroup('imagenes', 'Debe seleccionar una opción para las imágenes') && isValid;
+            isValid = validateRadioGroup('textos', 'Debe seleccionar una opción para los textos') && isValid;
+            isValid = validateRadioGroup('dominio', 'Debe seleccionar una opción para el dominio') && isValid;
+            isValid = validateRadioGroup('hosting', 'Debe seleccionar una opción para el hosting') && isValid;
+            isValid = validateRadioGroup('correoCorp', 'Debe seleccionar una opción para el correo corporativo') && isValid;
+            
+            // Validar dominio existente si es necesario
+            if (document.getElementById('tieneDominio').checked) {
+                isValid = validateField('dominioExistente', 'Debe ingresar el dominio existente') && isValid;
+            }
             
             if (isValid) {
-                // Cambiar a tu URL de webhook de n8n
-                this.action = 'https://n8n.ibpweb.site/webhook/formularioWeb';
-                this.submit();
+                // Deshabilitar botón de envío
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle; animation: spin 1s linear infinite;">
+                        <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" fill="currentColor"/>
+                    </svg>
+                    Enviando...
+                `;
+                
+                // Enviar formulario
+                const formData = new FormData(this);
+                
+                // Agregar fecha actual
+                formData.append('fechaEnvio', new Date().toISOString());
+                
+                fetch('https://n8n.ibpweb.site/webhook/formularioWeb', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showSuccessMessage();
+                        this.reset();
+                        // Restablecer fecha
+                        document.getElementById('fechaFirma').valueAsDate = new Date();
+                        // Reestablecer secciones por defecto
+                        document.getElementById('inicio').checked = true;
+                        document.getElementById('nosotros').checked = true;
+                        document.getElementById('contacto-seccion').checked = true;
+                        document.getElementById('faq').checked = true;
+                        document.getElementById('testimonios').checked = true;
+                        document.getElementById('espanol').checked = true;
+                        // Ocultar sección de servicios
+                        document.getElementById('servicios-section').style.display = 'none';
+                        // Ocultar campo de dominio
+                        hideElement(document.getElementById('dominio-existente-group'));
+                    } else {
+                        throw new Error('Error en el envío');
+                    }
+                })
+                .catch(error => {
+                    showErrorMessage('Hubo un error al enviar el formulario. Por favor, revise su conexión a internet e inténtelo nuevamente.');
+                })
+                .finally(() => {
+                    // Rehabilitar botón
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" fill="currentColor"/>
+                        </svg>
+                        Enviar Formulario
+                    `;
+                });
             } else {
-                alert('Por favor, complete todos los campos requeridos.');
+                showErrorMessage('Por favor, corrija los errores marcados en rojo antes de enviar el formulario.');
             }
         });
 
@@ -726,8 +977,11 @@
                     const input = this.querySelector('input');
                     if (input.type === 'checkbox') {
                         input.checked = !input.checked;
+                        // Disparar evento change manualmente
+                        input.dispatchEvent(new Event('change'));
                     } else if (input.type === 'radio') {
                         input.checked = true;
+                        input.dispatchEvent(new Event('change'));
                     }
                 }
             });
@@ -742,6 +996,16 @@
                 });
             });
         });
+
+        // Agregar animación de spin para el loader
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
