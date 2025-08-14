@@ -1,12 +1,4 @@
-.logo-section {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .logo {
-                width: 50px;
-                height: 50px;
-            }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -115,6 +107,7 @@
         .form-group input[type="email"],
         .form-group input[type="tel"],
         .form-group input[type="date"],
+        .form-group input[type="url"],
         .form-group textarea,
         .form-group select {
             width: 100%;
@@ -162,7 +155,8 @@
             background: #f8f9ff;
         }
 
-        .checkbox-item input[type="checkbox"] {
+        .checkbox-item input[type="checkbox"],
+        .checkbox-item input[type="radio"] {
             width: 20px;
             height: 20px;
             margin-right: 12px;
@@ -238,6 +232,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
         }
 
         .submit-btn:hover {
@@ -274,6 +270,16 @@
 
             .checkbox-group {
                 grid-template-columns: 1fr;
+            }
+
+            .logo-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
             }
         }
     </style>
@@ -399,8 +405,8 @@
                             <label for="nosotros">Nosotros</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="contacto" name="secciones" value="contacto">
-                            <label for="contacto">Contacto</label>
+                            <input type="checkbox" id="contacto-seccion" name="secciones" value="contacto">
+                            <label for="contacto-seccion">Contacto</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="faq" name="secciones" value="faq">
