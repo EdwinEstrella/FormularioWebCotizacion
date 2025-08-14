@@ -468,8 +468,8 @@
                     </div>
                 </div>
 
-                <div class="form-group" id="servicios-section" style="display: none;">
-                    <label>Servicios (si aplica):</label>
+                <div class="form-group">
+                    <label>Servicios que ofrece su empresa:</label>
                     <div class="services-grid">
                         <div class="service-input">
                             <span>1.</span>
@@ -487,7 +487,18 @@
                             <span>4.</span>
                             <input type="text" name="servicio4" placeholder="Servicio 4">
                         </div>
+                        <div class="service-input">
+                            <span>5.</span>
+                            <input type="text" name="servicio5" placeholder="Servicio 5">
+                        </div>
+                        <div class="service-input">
+                            <span>6.</span>
+                            <input type="text" name="servicio6" placeholder="Servicio 6">
+                        </div>
                     </div>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        * Cada servicio puede requerir una página dedicada en su sitio web
+                    </p>
                 </div>
 
                 <div class="form-group">
@@ -762,12 +773,8 @@
 
         // Mostrar sección de servicios cuando se selecciona "Presentación de servicios"
         document.getElementById('servicios').addEventListener('change', function() {
-            const serviciosSection = document.getElementById('servicios-section');
-            if (this.checked) {
-                serviciosSection.style.display = 'block';
-            } else {
-                serviciosSection.style.display = 'none';
-            }
+            // Los servicios siempre están visibles ahora
+            // Esta función se mantiene para compatibilidad futura
         });
 
         // Mostrar campo de dominio cuando se selecciona "Sí, ya lo tengo"
@@ -924,12 +931,214 @@
                 // Enviar formulario
                 const formData = new FormData(this);
                 
-                // Agregar fecha actual
-                formData.append('fechaEnvio', new Date().toISOString());
+                // Crear objeto estructurado para n8n
+                const structuredData = {
+                    // Información del cliente
+                    cliente: formData.get('cliente'),
+                    telefono: formData.get('telefono'),
+                    email: formData.get('email'),
+                    fechaEnvio: new Date().toISOString(),
+                    
+                    // Información del negocio
+                    nombreComercial: formData.get('nombreComercial'),
+                    descripcionNegocio: formData.get('descripcionNegocio'),
+                    direccion: formData.get('direccion'),
+                    telefonoContacto: formData.get('telefonoContacto'),
+                    correoCorporativo: formData.get('correoCorporativo'),
+                    
+                    // Redes sociales
+                    redesSociales: {
+                        facebook: formData.get('facebook'),
+                        instagram: formData.get('instagram'),
+                        tiktok: formData.get('tiktok'),
+                        linkedin: formData.get('linkedin'),
+                        otra: formData.get('otraRed')
+                    },
+                    
+                    // Objetivos seleccionados
+                    objetivos: formData.getAll('objetivo'),
+                    objetivoOtro: formData.get('objetivoOtro'),
+                    
+                    // Secciones de la web
+                    seccionesNecesarias: formData.getAll('secciones').join('\n'),
+                    
+                    // Servicios de la empresa
+                    servicios: [
+                        formData.get('servicio1'),
+                        formData.get('servicio2'),
+                        formData.get('servicio3'),
+                        formData.get('servicio4'),
+                        formData.get('servicio5'),
+                        formData.get('servicio6')
+                    ].filter(s => s && s.trim() !== '').join('\n'),
+                    
+                    // Idiomas
+                    idiomas: formData.getAll('idiomas'),
+                    otroIdioma: formData.get('otroIdioma'),
+                    
+                    // Contenido
+                    imagenes: formData.get('imagenes'),
+                    textos: formData.get('textos'),
+                    palabrasClave: formData.get('palabrasClave'),
+                    
+                    // Información técnica
+                    dominio: formData.get('dominio'),
+                    dominioExistente: formData.get('dominioExistente'),
+                    hosting: formData.get('hosting'),
+                    correoCorp: formData.get('correoCorp'),
+                    
+                    // Diseño
+                    coloresPrimarios: formData.get('coloresPrimarios'),
+                    coloresSecundarios: formData.get('coloresSecundarios'),
+                    estilos: formData.getAll('estilo'),
+                    otroEstilo: formData.get('otroEstilo'),
+                    referencias: {
+                        ref1: formData.get('referencia1'),
+                        ref2: formData.get('referencia2'),
+                        ref3: formData.get('referencia3')
+                    },
+                    
+                    // Funcionalidades
+                    funcionalidades: formData.getAll('funcionalidades'),
+                    otraFuncionalidad: formData.get('otraFuncionalidad'),
+                    
+                    // Firma
+                    firmaCliente: formData.get('firmaCliente'),
+                    fechaFirma: formData.get('fechaFirma')
+                };
+
+                // CÁLCULOS AUTOMÁTICOS DE PRECIOS
+                const precios = {
+                    base: 300,
+                    servicio: 25,
+                    copywriting: 10,
+                    dominio: 78,
+                    hosting: 25,
+                    mantenimiento: 30
+                };
+
+                // Contar elementos
+                const serviciosLista = [
+                    formData.get('servicio1'),
+                    formData.get('servicio2'),
+                    formData.get('servicio3'),
+                    formData.get('servicio4'),
+                    formData.get('servicio5'),
+                    formData.get('servicio6')
+                ].filter(s => s && s.trim() !== '');
+
+                const seccionesLista = formData.getAll('secciones');
+                const funcionalidadesLista = formData.getAll('funcionalidades');
+
+                // Cálculos individuales
+                const costoBase = precios.base;
+                const costoServicios = serviciosLista.length * precios.servicio;
+                const paginasTotales = seccionesLista.length + serviciosLista.length;
+                const costoCopywriting = formData.get('textos') === 'copywriting' ? paginasTotales * precios.copywriting : 0;
+                const costoDominio = formData.get('dominio') === 'necesita' ? precios.dominio : 0;
+                const costoHostingMensual = formData.get('hosting') === 'necesita' ? precios.hosting : 0;
                 
+                // Total único
+                const totalUnico = costoBase + costoServicios + costoCopywriting + costoDominio;
+                
+                // Total mensual
+                const totalMensual = costoHostingMensual;
+
+                // Objeto de cálculos detallado
+                const calculosPrecios = {
+                    // Costos individuales
+                    costoBase: costoBase,
+                    costoServicios: costoServicios,
+                    costoCopywriting: costoCopywriting,
+                    costoDominio: costoDominio,
+                    costoHostingMensual: costoHostingMensual,
+                    costoMantenimientoMensual: precios.mantenimiento, // Disponible pero no aplicado automáticamente
+                    
+                    // Totales
+                    totalUnico: totalUnico,
+                    totalMensual: totalMensual,
+                    
+                    // Conteos
+                    cantidadPaginasBase: seccionesLista.length,
+                    cantidadServicios: serviciosLista.length,
+                    cantidadPaginasTotales: paginasTotales,
+                    cantidadFuncionalidades: funcionalidadesLista.length,
+                    
+                    // Flags booleanos
+                    necesitaDominio: formData.get('dominio') === 'necesita',
+                    necesitaHosting: formData.get('hosting') === 'necesita',
+                    necesitaCopywriting: formData.get('textos') === 'copywriting',
+                    tieneEcommerce: formData.getAll('objetivo').includes('ecommerce'),
+                    esBilingue: formData.getAll('idiomas').includes('bilingue'),
+                    
+                    // Desglose detallado
+                    desglose: {
+                        paginaWeb: {
+                            descripcion: "Página web base (home, nosotros, contacto, FAQ, etc.)",
+                            cantidad: 1,
+                            precioUnitario: precios.base,
+                            total: costoBase
+                        },
+                        paginasServicios: {
+                            descripcion: "Páginas adicionales de servicios",
+                            cantidad: serviciosLista.length,
+                            precioUnitario: precios.servicio,
+                            total: costoServicios,
+                            servicios: serviciosLista
+                        },
+                        copywriting: {
+                            descripcion: "Servicio de copywriting por página",
+                            cantidad: formData.get('textos') === 'copywriting' ? paginasTotales : 0,
+                            precioUnitario: precios.copywriting,
+                            total: costoCopywriting,
+                            activo: formData.get('textos') === 'copywriting'
+                        },
+                        dominio: {
+                            descripcion: "Registro de dominio anual",
+                            cantidad: formData.get('dominio') === 'necesita' ? 1 : 0,
+                            precioUnitario: precios.dominio,
+                            total: costoDominio,
+                            activo: formData.get('dominio') === 'necesita'
+                        },
+                        hosting: {
+                            descripcion: "Hosting mensual",
+                            cantidad: formData.get('hosting') === 'necesita' ? 1 : 0,
+                            precioUnitario: precios.hosting,
+                            total: costoHostingMensual,
+                            activo: formData.get('hosting') === 'necesita',
+                            tipo: "mensual"
+                        },
+                        mantenimiento: {
+                            descripcion: "Mantenimiento mensual (opcional)",
+                            cantidad: 0, // No aplicado automáticamente
+                            precioUnitario: precios.mantenimiento,
+                            total: 0,
+                            activo: false,
+                            tipo: "mensual",
+                            nota: "Cualquier actualización futura puede tener un costo mayor sin este servicio"
+                        }
+                    },
+                    
+                    // Información adicional
+                    seccionesSeleccionadas: seccionesLista,
+                    serviciosDetalle: serviciosLista,
+                    funcionalidadesSeleccionadas: funcionalidadesLista,
+                    monedaDisplay: "USD",
+                    fechaCalculo: new Date().toISOString()
+                };
+
+                // Combinar datos del formulario con cálculos
+                const dataCompleta = {
+                    ...structuredData,
+                    precios: calculosPrecios
+                };
+
                 fetch('https://n8n.ibpweb.site/webhook/formularioWeb', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dataCompleta)
                 })
                 .then(response => {
                     if (response.ok) {
@@ -944,8 +1153,6 @@
                         document.getElementById('faq').checked = true;
                         document.getElementById('testimonios').checked = true;
                         document.getElementById('espanol').checked = true;
-                        // Ocultar sección de servicios
-                        document.getElementById('servicios-section').style.display = 'none';
                         // Ocultar campo de dominio
                         hideElement(document.getElementById('dominio-existente-group'));
                     } else {
