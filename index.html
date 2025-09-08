@@ -44,26 +44,6 @@
             font-size: 1.1em;
         }
 
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            padding-top: 20px;
-        }
-
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .nav a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -280,7 +260,7 @@
 
                 <div class="form-group">
                     <label for="clientEmail">Correo Electrónico</label>
-                    <input type="email" id="clientEmail" placeholder="cliente @email.com">
+                    <input type="email" id="clientEmail" placeholder="cliente@email.com">
                 </div>
 
                 <div class="form-group">
@@ -519,8 +499,7 @@
 
             // Obtener características del proyecto
             const projectName = projectType && projectConfigs[projectType] ? projectConfigs[projectType].name : '[Tipo de Proyecto]';
-            const projectFeatures = projectType && projectConfigs[projectType] ? projectConfigs[projectType].features.join('
-• ') : '';
+            const projectFeatures = projectType && projectConfigs[projectType] ? projectConfigs[projectType].features.join('\n• ') : '';
 
             const today = new Date();
             const formattedDate = today.toLocaleDateString('es-ES', { 
@@ -618,7 +597,7 @@
                         <p><strong>EL CONTRATISTA</strong></p>
                         <p>Nombre: Agencia Azokia LLC</p>
                         <p>Firma: _________________________</p>
-                        <p>Correo: contacto @azokia.com</p>
+                        <p>Correo: contacto@azokia.com</p>
                     </div>
                 </div>
             `;
