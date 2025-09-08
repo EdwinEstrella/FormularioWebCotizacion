@@ -269,13 +269,6 @@
                 <a href="Cotizacion.html">Cotización</a>
             </nav>
         </header>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🚀 Generador de Contratos</h1>
-            <p>Agencia Azokia LLC - Contratos Profesionales Automatizados</p>
-        </div>
-
         <div class="main-content">
             <div class="form-section">
                 <h3>📋 Información del Cliente</h3>
@@ -479,6 +472,9 @@
 
             // Configurar el tipo de proyecto
             document.getElementById('projectType').addEventListener('change', updateProjectFeatures);
+
+            // Generar contrato inicial
+            generateContract();
         });
 
         function updateProjectFeatures() {
@@ -523,21 +519,26 @@
             const additionalNotes = document.getElementById('additionalNotes').value;
 
             // Calcular pagos
-            const initialAmount = totalCost ? (totalCost * initialPayment / 100).toFixed(2) : '[Monto Inicial]';
-            const middleAmount = totalCost ? (totalCost * middlePayment / 100).toFixed(2) : '[Monto Intermedio]';
+            const initialAmount = totalCost && totalCost !== '[Monto Total]' ? (parseFloat(totalCost) * parseFloat(initialPayment) / 100).toFixed(2) : '[Monto Inicial]';
+            const middleAmount = totalCost && totalCost !== '[Monto Total]' ? (parseFloat(totalCost) * parseFloat(middlePayment) / 100).toFixed(2) : '[Monto Intermedio]';
             const finalPayment = 100 - parseInt(initialPayment) - parseInt(middlePayment);
-            const finalAmount = totalCost ? (totalCost * finalPayment / 100).toFixed(2) : '[Monto Final]';
+            const finalAmount = totalCost && totalCost !== '[Monto Total]' ? (parseFloat(totalCost) * finalPayment / 100).toFixed(2) : '[Monto Final]';
 
             // Obtener características del proyecto
             const projectName = projectType && projectConfigs[projectType] ? projectConfigs[projectType].name : '[Tipo de Proyecto]';
-            const projectFeatures = projectType && projectConfigs[projectType] ? projectConfigs[projectType].features.join('\n• ') : '';
+            const projectFeatures = projectType && projectConfigs[projectType] ? projectConfigs[projectType].features.join('
+• ') : '';
 
             const today = new Date();
-            const formattedDate = today.toLocaleDateString('es-ES', { 
+            const contractStartDate = today.toLocaleDateString('es-ES', { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric' 
             });
+            const supportDaysVal = parseInt(supportDays, 10) || 30;
+            const endDate = new Date(today);
+            endDate.setDate(today.getDate() + supportDaysVal);
+            const formattedEndDate = endDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
             const contractHtml = `
                 <h4>CONTRATO DE PRESTACIÓN DE SERVICIOS PROFESIONALES</h4>
@@ -572,11 +573,11 @@
                 <p><strong>Penalización por retraso:</strong> En caso de retraso injustificado superior a 5 días, el cliente podrá solicitar una penalización del 2% del monto total por cada día de retraso, o cancelar el contrato con devolución proporcional.</p>
 
                 <h4>5. Presupuesto y Forma de Pago</h4>
-                <p>El precio total del proyecto será de <span class="highlighted">USD $${totalCost}</span></p>
+                <p>El precio total del proyecto será de <span class="highlighted">USD ${totalCost}</span></p>
                 <p><strong>Desglose de pagos:</strong></p>
-                <p>• <span class="highlighted">${initialPayment}%</span> al inicio: <strong>USD $${initialAmount}</strong></p>
-                <p>• <span class="highlighted">${middlePayment}%</span> contra entrega parcial: <strong>USD $${middleAmount}</strong></p>
-                <p>• <span class="highlighted">${finalPayment}%</span> al finalizar: <strong>USD $${finalAmount}</strong></p>
+                <p>• <span class="highlighted">${initialPayment}%</span> al inicio: <strong>USD ${initialAmount}</strong></p>
+                <p>• <span class="highlighted">${middlePayment}%</span> contra entrega parcial: <strong>USD ${middleAmount}</strong></p>
+                <p>• <span class="highlighted">${finalPayment}%</span> al finalizar: <strong>USD ${finalAmount}</strong></p>
                 <p>Los pagos atrasados generarán un interés del 1% por cada día de retraso. El proyecto no avanza hasta que se reciban los pagos correspondientes a cada fase.</p>
 
                 <h4>6. Garantías y Responsabilidades del Contratista</h4>
@@ -635,7 +636,7 @@
                         <p>Fecha: _______________</p>
                     </div>
                 </div>
-            `;
+            `
 
             document.getElementById('contractContent').innerHTML = contractHtml;
         }
@@ -672,9 +673,6 @@
         function printContract() {
             downloadContract();
         }
-
-        // Generar contrato inicial
-        generateContract();
     </script>
 </body>
 </html>
