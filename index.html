@@ -27,36 +27,11 @@
             overflow: hidden;
         }
 
-        .logo {
-            max-width: 200px;
-            margin-bottom: 1rem;
-        }
-
         .header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
-            padding: 1rem;
+            padding: 30px;
             text-align: center;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            padding: 1rem;
-            background-color: #34495e;
-        }
-
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .nav a:hover {
-            background-color: #3498db;
         }
 
         .header h1 {
@@ -257,18 +232,15 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        </style>
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <img src="assets/logo.png" alt="Logo Azokia" class="logo">
-            <h1>Agencia Azokia</h1>
-            <nav class="nav">
-                <a href="index.html">Contratos</a>
-                <a href="Cotizacion.html">Cotización</a>
-            </nav>
-        </header>
+        <div class="header">
+            <h1>🚀 Generador de Contratos</h1>
+            <p>Agencia Azokia LLC - Contratos Profesionales Automatizados</p>
+        </div>
+
         <div class="main-content">
             <div class="form-section">
                 <h3>📋 Información del Cliente</h3>
@@ -284,7 +256,7 @@
 
                 <div class="form-group">
                     <label for="clientEmail">Correo Electrónico</label>
-                    <input type="email" id="clientEmail" placeholder="cliente@email.com">
+                    <input type="email" id="clientEmail" placeholder="cliente @email.com">
                 </div>
 
                 <div class="form-group">
@@ -472,9 +444,6 @@
 
             // Configurar el tipo de proyecto
             document.getElementById('projectType').addEventListener('change', updateProjectFeatures);
-
-            // Generar contrato inicial
-            generateContract();
         });
 
         function updateProjectFeatures() {
@@ -519,10 +488,10 @@
             const additionalNotes = document.getElementById('additionalNotes').value;
 
             // Calcular pagos
-            const initialAmount = totalCost && totalCost !== '[Monto Total]' ? (parseFloat(totalCost) * parseFloat(initialPayment) / 100).toFixed(2) : '[Monto Inicial]';
-            const middleAmount = totalCost && totalCost !== '[Monto Total]' ? (parseFloat(totalCost) * parseFloat(middlePayment) / 100).toFixed(2) : '[Monto Intermedio]';
+            const initialAmount = totalCost ? (totalCost * initialPayment / 100).toFixed(2) : '[Monto Inicial]';
+            const middleAmount = totalCost ? (totalCost * middlePayment / 100).toFixed(2) : '[Monto Intermedio]';
             const finalPayment = 100 - parseInt(initialPayment) - parseInt(middlePayment);
-            const finalAmount = totalCost && totalCost !== '[Monto Total]' ? (parseFloat(totalCost) * finalPayment / 100).toFixed(2) : '[Monto Final]';
+            const finalAmount = totalCost ? (totalCost * finalPayment / 100).toFixed(2) : '[Monto Final]';
 
             // Obtener características del proyecto
             const projectName = projectType && projectConfigs[projectType] ? projectConfigs[projectType].name : '[Tipo de Proyecto]';
@@ -530,15 +499,11 @@
 • ') : '';
 
             const today = new Date();
-            const contractStartDate = today.toLocaleDateString('es-ES', { 
+            const formattedDate = today.toLocaleDateString('es-ES', { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric' 
             });
-            const supportDaysVal = parseInt(supportDays, 10) || 30;
-            const endDate = new Date(today);
-            endDate.setDate(today.getDate() + supportDaysVal);
-            const formattedEndDate = endDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
             const contractHtml = `
                 <h4>CONTRATO DE PRESTACIÓN DE SERVICIOS PROFESIONALES</h4>
@@ -573,11 +538,11 @@
                 <p><strong>Penalización por retraso:</strong> En caso de retraso injustificado superior a 5 días, el cliente podrá solicitar una penalización del 2% del monto total por cada día de retraso, o cancelar el contrato con devolución proporcional.</p>
 
                 <h4>5. Presupuesto y Forma de Pago</h4>
-                <p>El precio total del proyecto será de <span class="highlighted">USD ${totalCost}</span></p>
+                <p>El precio total del proyecto será de <span class="highlighted">USD $${totalCost}</span></p>
                 <p><strong>Desglose de pagos:</strong></p>
-                <p>• <span class="highlighted">${initialPayment}%</span> al inicio: <strong>USD ${initialAmount}</strong></p>
-                <p>• <span class="highlighted">${middlePayment}%</span> contra entrega parcial: <strong>USD ${middleAmount}</strong></p>
-                <p>• <span class="highlighted">${finalPayment}%</span> al finalizar: <strong>USD ${finalAmount}</strong></p>
+                <p>• <span class="highlighted">${initialPayment}%</span> al inicio: <strong>USD $${initialAmount}</strong></p>
+                <p>• <span class="highlighted">${middlePayment}%</span> contra entrega parcial: <strong>USD $${middleAmount}</strong></p>
+                <p>• <span class="highlighted">${finalPayment}%</span> al finalizar: <strong>USD $${finalAmount}</strong></p>
                 <p>Los pagos atrasados generarán un interés del 1% por cada día de retraso. El proyecto no avanza hasta que se reciban los pagos correspondientes a cada fase.</p>
 
                 <h4>6. Garantías y Responsabilidades del Contratista</h4>
@@ -614,11 +579,9 @@
                 <h4>13. Resolución de Conflictos</h4>
                 <p>En caso de disputas: negociación directa (5 días), mediación con tercero neutral, y jurisdicción de tribunales competentes en República Dominicana.</p>
 
-                <h4>17. Firma y Aceptación</h4>
+                <h4>14. Firma y Aceptación</h4>
                 <p>Ambas partes declaran haber leído, entendido y aceptado este contrato.</p>
-                <p><strong>Fecha de inicio del contrato:</strong> ${contractStartDate}</p>
-                <p><strong>Fecha de vencimiento del mantenimiento obligatorio:</strong> ${formattedEndDate}</p>
-                <p>En Santo Domingo Norte, República Dominicana, a ${contractStartDate}.</p>
+                <p>En Santo Domingo, República Dominicana, a ${formattedDate}.</p>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; border-top: 2px solid #ecf0f1; padding-top: 30px;">
                     <div>
@@ -626,17 +589,15 @@
                         <p>Nombre: <span class="highlighted">${clientName}</span></p>
                         <p>Firma: _________________________</p>
                         <p>Correo: <span class="highlighted">${clientEmail}</span></p>
-                        <p>Fecha: _______________</p>
                     </div>
                     <div>
                         <p><strong>EL CONTRATISTA</strong></p>
                         <p>Nombre: Agencia Azokia LLC</p>
                         <p>Firma: _________________________</p>
-                        <p>Correo: info@azokia.com</p>
-                        <p>Fecha: _______________</p>
+                        <p>Correo: contacto @azokia.com</p>
                     </div>
                 </div>
-            `
+            `;
 
             document.getElementById('contractContent').innerHTML = contractHtml;
         }
@@ -673,6 +634,9 @@
         function printContract() {
             downloadContract();
         }
+
+        // Generar contrato inicial
+        generateContract();
     </script>
 </body>
 </html>
